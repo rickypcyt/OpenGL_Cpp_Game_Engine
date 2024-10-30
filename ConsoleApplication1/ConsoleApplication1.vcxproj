@@ -133,7 +133,7 @@
     <ClCompile Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\src\globals.cpp" />
     <ClCompile Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\src\movement.cpp" />
     <ClCompile Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\src\renderer.cpp" />
-    <ClCompile Include="ConsoleApplication1.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\camera.h" />
