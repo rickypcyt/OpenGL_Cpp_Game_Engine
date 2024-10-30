@@ -33,6 +33,12 @@
     <ClCompile Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\src\renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="crosshair.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="models.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\camera.h">
@@ -48,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="models.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
