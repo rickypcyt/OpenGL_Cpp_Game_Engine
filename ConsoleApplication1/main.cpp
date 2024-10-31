@@ -106,7 +106,7 @@ int main() {
     
     setupLighting();
 
-    GLuint floorTextureID = loadTexture("C:/Users/ricar/Documents/floor.jpg");
+    GLuint floorTextureID = loadTexture("C:/Users/ricar/Documents/floor2.png");
 
     // Main game loop
     auto lastFrameTimePoint = std::chrono::high_resolution_clock::now();
@@ -137,6 +137,19 @@ int main() {
         drawCrosshair(WIDTH, HEIGHT);
 
         updateMovement(deltaTime);
+
+        frameCount++;
+        if (glfwGetTime() - lastTime >= 1.0) {
+            fps = static_cast<float>(frameCount);
+            displayFPS(fps);
+            frameCount = 0;
+            lastTime += 1.0;
+        }
+
+        // Render FPS counter on screen
+        std::ostringstream fpsStream;
+        fpsStream << "FPS: " << fps;
+        renderText(fpsStream.str(), -0.9f, 0.9f);
 
         // Swap buffers and process events
         glfwSwapBuffers(window);
