@@ -102,9 +102,9 @@ int main() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  // Hide cursor for FPS-style camera
 
     setupProjection();
-    
+
     setupLighting();
-    
+
     updateLighting();
 
     renderObjectWithLighting();
@@ -134,7 +134,7 @@ int main() {
         // Render scene elements
 
         drawFloor(floorTextureID);
-        
+
         // After drawing 3D elements like the floor
         glDisable(GL_DEPTH_TEST); // Disable depth test for 2D overlay
 
@@ -158,7 +158,7 @@ int main() {
 
         glColor3f(1.0f, 1.0f, 1.0f);
 
-        
+
 
         updateMovement(deltaTime);
 

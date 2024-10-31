@@ -1,8 +1,11 @@
 #include "models.h"
 #include <iostream>
 #include <unordered_map>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
-Model::Model() : VAO(0), VBO(0), EBO(0), isInitialized(false) {}
+Model::Model() : VAO(0), VBO(0), EBO(0), isInitialized(false), modelMatrix(glm::mat4(1.0f)) {}
 
 Model::~Model() {
     cleanup();
@@ -47,17 +50,20 @@ bool Model::loadFromFile(const std::string& objFilename, const std::string& mtlB
     return true;
 }
 
-void Model::draw() const {
+void Model::draw(GLuint shaderProgram) const {
     if (!isInitialized) {
         std::cerr << "Attempting to draw uninitialized model" << std::endl;
         return;
     }
 
+    // Apply a slight upward translation
+    glm::mat4 tempModelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, 1.0f, 0.0f));  // Update the class member
+
+    // Send the model matrix to the shader
+    GLint modelLoc = glGetUniformLocation(shaderProgram, "u_ModelMatrix");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+
     glBindVertexArray(VAO);
-    if (glGetError() != GL_NO_ERROR) {
-        std::cerr << "Error binding VAO" << std::endl;
-        return;
-    }
 
     if (!indices.empty()) {
         glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(indices.size()), GL_UNSIGNED_INT, 0);
@@ -66,13 +72,10 @@ void Model::draw() const {
         glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(vertices.size()));
     }
 
-    GLenum err = glGetError();
-    if (err != GL_NO_ERROR) {
-        std::cerr << "Error during draw call: " << err << std::endl;
-    }
-
     glBindVertexArray(0);
 }
+
+
 
 bool Model::processModelData(const tinyobj::attrib_t& attrib, const std::vector<tinyobj::shape_t>& shapes) {
     try {
@@ -159,53 +162,27 @@ bool Model::setupBuffers() {
     try {
         // Generate and bind VAO
         glGenVertexArrays(1, &VAO);
-        if (VAO == 0) {
-            std::cerr << "Failed to generate VAO" << std::endl;
-            return false;
-        }
         glBindVertexArray(VAO);
 
         // Generate and setup VBO
         glGenBuffers(1, &VBO);
-        if (VBO == 0) {
-            std::cerr << "Failed to generate VBO" << std::endl;
-            cleanup();
-            return false;
-        }
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 
         // Setup vertex attributes
-        // Position attribute
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
         glEnableVertexAttribArray(0);
 
-        // Normal attribute
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
         glEnableVertexAttribArray(1);
 
-        // Texture coordinate attribute
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoord));
         glEnableVertexAttribArray(2);
 
-        // Setup EBO if we have indices
         if (!indices.empty()) {
             glGenBuffers(1, &EBO);
-            if (EBO == 0) {
-                std::cerr << "Failed to generate EBO" << std::endl;
-                cleanup();
-                return false;
-            }
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), indices.data(), GL_STATIC_DRAW);
-        }
-
-        // Check for OpenGL errors
-        GLenum error = glGetError();
-        if (error != GL_NO_ERROR) {
-            std::cerr << "OpenGL error during buffer setup: " << error << std::endl;
-            cleanup();
-            return false;
         }
 
         glBindVertexArray(0);

@@ -146,6 +146,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="models.cpp" />
     <ClCompile Include="lights.cpp" />
+    <ClCompile Include="shaders.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\camera.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\movement.h" />
     <ClInclude Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\renderer.h" />
     <ClInclude Include="crosshair.h" />
+    <ClInclude Include="shaders.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="lights.h" />
     <ClInclude Include="models.h" />
