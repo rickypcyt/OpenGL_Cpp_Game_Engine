@@ -10,17 +10,17 @@
 #include <GL/freeglut.h>   // For text rendering capabilities
 
 // Custom engine components
-#include "models.h"        // 3D model loading and rendering
 #include "renderer.h"      // Graphics rendering utilities
 #include "movement.h"      // Character movement and physics
 #include "globals.h"       // Global variables and constants
 #include "cursor.h"        // Cursor/mouse input handling
+#include "crosshair.h"
 
 // Global window handle
 GLFWwindow* window = nullptr;
 
 // Frame rate control constants and variables
-const float TARGET_FPS = 60.0f;                    // Desired frames per second
+const float TARGET_FPS = 120.0f;                    // Desired frames per second
 const float FRAME_DURATION_MS = 1000.0f / TARGET_FPS;  // Duration of one frame in milliseconds
 float lastFrameTime = 0.0f;                        // Time of last frame render
 float lastTime = 0.0f;                             // Time tracker for FPS calculation
@@ -89,24 +89,13 @@ int main() {
         return -1;
     }
 
-    // Create and load 3D model
-    Model myModel;
-    if (!myModel.loadFromFile("C:/Users/ricar/Downloads/Cubone/model.obj")) {
-        std::cerr << "Failed to load model" << std::endl;
-        return -1;
-    }
-
     // Initialize GLUT for text rendering
     int argc = 0;
     char** argv = nullptr;
     glutInit(&argc, argv);
 
-    // Set up input handling
-    glfwSetKeyCallback(window, key_callback);
-    glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  // Hide cursor for FPS-style camera
+    
 
-    setupProjection();
 
     // Main game loop
     auto lastFrameTimePoint = std::chrono::high_resolution_clock::now();
@@ -129,23 +118,20 @@ int main() {
             0.0f, 1.0f, 0.0f);
 
         // Render scene elements
+        
+        // Set up input handling
+        glfwSetKeyCallback(window, key_callback);
+        glfwSetCursorPosCallback(window, mouse_callback);
+        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  // Hide cursor for FPS-style camera
+
+       
+        setupProjection();
+
         drawFloor();
-        myModel.draw();
+
+        drawCrosshair(WIDTH, HEIGHT);
+
         updateMovement(deltaTime);
-
-        // Calculate and display FPS
-        frameCount++;
-        if (glfwGetTime() - lastTime >= 1.0) {
-            fps = static_cast<float>(frameCount);
-            displayFPS(fps);
-            frameCount = 0;
-            lastTime += 1.0;
-        }
-
-        // Render FPS counter on screen
-        std::ostringstream fpsStream;
-        fpsStream << "FPS: " << fps;
-        renderText(fpsStream.str(), -0.9f, 0.9f);
 
         // Swap buffers and process events
         glfwSwapBuffers(window);
@@ -164,4 +150,3 @@ int main() {
     glfwTerminate();
     return 0;
 }
-

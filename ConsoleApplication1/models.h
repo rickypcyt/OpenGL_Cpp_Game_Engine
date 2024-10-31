@@ -1,14 +1,17 @@
-#ifndef MODELS_H
-#define MODELS_H
+#ifndef MODEL_H
+#define MODEL_H
 
+#include <glad/glad.h>  // Include OpenGL headers
+#include <glm/glm.hpp>  // Include GLM
+#include <string>
 #include <vector>
-#include <GL/glew.h>
-#include "tiny_obj_loader.h" // Make sure to include the tiny_obj_loader header
+#include <tiny_obj_loader.h>  // Include tiny_obj_loader
 
+// Vertex structure definition
 struct Vertex {
-    float position[3];
-    float normal[3];
-    float texCoord[2];
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec2 texCoord;
 };
 
 class Model {
@@ -16,15 +19,18 @@ public:
     Model();
     ~Model();
 
-    bool loadFromFile(const std::string& filename);
+    bool loadFromFile(const std::string& objFilename, const std::string& mtlBasePath);
     void draw() const;
 
 private:
-    void setupBuffers();
+    bool processModelData(const tinyobj::attrib_t& attrib, const std::vector<tinyobj::shape_t>& shapes);
+    bool setupBuffers();
+    void cleanup();
 
-    std::vector<Vertex> vertices;
-    std::vector<GLuint> indices;
     GLuint VAO, VBO, EBO;
+    std::vector<Vertex> vertices;
+    std::vector<uint32_t> indices;
+    bool isInitialized;
 };
 
-#endif // MODELS_H
+#endif // MODEL_H

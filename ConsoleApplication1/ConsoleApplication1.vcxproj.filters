@@ -59,5 +59,18 @@
     <ClInclude Include="models.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="crosshair.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vertex_shader.glsl">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="fragment_shader.glsl">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
