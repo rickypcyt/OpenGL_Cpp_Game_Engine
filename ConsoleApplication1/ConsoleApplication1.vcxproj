@@ -108,7 +108,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\;</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\;</AdditionalUsingDirectories>
     </ClCompile>
@@ -127,6 +127,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\;</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\;</AdditionalUsingDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,6 +145,7 @@
     <ClCompile Include="crosshair.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="models.cpp" />
+    <ClCompile Include="lights.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\camera.h" />
@@ -152,6 +154,8 @@
     <ClInclude Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\movement.h" />
     <ClInclude Include="..\..\..\..\Documents\CODEO 2024\CppOpenGLGameEngine-main\include\renderer.h" />
     <ClInclude Include="crosshair.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="lights.h" />
     <ClInclude Include="models.h" />
   </ItemGroup>
   <ItemGroup>

@@ -15,6 +15,8 @@
 #include "globals.h"       // Global variables and constants
 #include "cursor.h"        // Cursor/mouse input handling
 #include "crosshair.h"
+#include "lights.h"
+
 
 // Global window handle
 GLFWwindow* window = nullptr;
@@ -94,8 +96,17 @@ int main() {
     char** argv = nullptr;
     glutInit(&argc, argv);
 
-    
+    // Set up input handling
+    glfwSetKeyCallback(window, key_callback);
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  // Hide cursor for FPS-style camera
 
+
+    setupProjection();
+    
+    setupLighting();
+
+    GLuint floorTextureID = loadTexture("C:/Users/ricar/Documents/floor.jpg");
 
     // Main game loop
     auto lastFrameTimePoint = std::chrono::high_resolution_clock::now();
@@ -119,15 +130,9 @@ int main() {
 
         // Render scene elements
         
-        // Set up input handling
-        glfwSetKeyCallback(window, key_callback);
-        glfwSetCursorPosCallback(window, mouse_callback);
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  // Hide cursor for FPS-style camera
+        drawFloor(floorTextureID);
 
-       
-        setupProjection();
-
-        drawFloor();
+        renderObjectWithLighting();
 
         drawCrosshair(WIDTH, HEIGHT);
 
