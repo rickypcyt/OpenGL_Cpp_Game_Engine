@@ -101,10 +101,13 @@ int main() {
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  // Hide cursor for FPS-style camera
 
-
     setupProjection();
     
     setupLighting();
+    
+    updateLighting();
+
+    renderObjectWithLighting();
 
     GLuint floorTextureID = loadTexture("C:/Users/ricar/Documents/floor2.png");
 
@@ -129,12 +132,33 @@ int main() {
             0.0f, 1.0f, 0.0f);
 
         // Render scene elements
-        
+
         drawFloor(floorTextureID);
+        
+        // After drawing 3D elements like the floor
+        glDisable(GL_DEPTH_TEST); // Disable depth test for 2D overlay
 
-        renderObjectWithLighting();
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
+        glLoadIdentity();
+        gluOrtho2D(0, WIDTH, 0, HEIGHT); // Set orthographic projection
 
-        drawCrosshair(WIDTH, HEIGHT);
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+
+        drawCrosshair(WIDTH, HEIGHT); // Draw crosshair in 2D
+
+        glPopMatrix();
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+
+        glEnable(GL_DEPTH_TEST); // Re-enable depth test for next frame
+
+        glColor3f(1.0f, 1.0f, 1.0f);
+
+        
 
         updateMovement(deltaTime);
 
