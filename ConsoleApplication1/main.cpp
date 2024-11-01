@@ -100,10 +100,10 @@ int main() {
     GLuint wallTextureID = loadTexture("C:/Users/ricar/Documents/wall1.jpg");
 
     // Create and load the model
-    if (!myModel.loadFromFile("C:/Users/ricar/Documents/Cubone/model.obj", "C:/Users/ricar/Documents/Cubone/materials.mtl")) {
-        std::cerr << "Failed to load model" << std::endl;
-        return -1;
-    }
+    //if (!myModel.loadFromFile("C:/Users/ricar/Documents/Models/Basic Temple.obj", "C:/Users/ricar/Documents/Models/Basic Temple.mtl")) {
+        //std::cerr << "Failed to load model" << std::endl;
+        //return -1;
+    //}
 
     auto lastFrameTimePoint = std::chrono::high_resolution_clock::now();
     while (!glfwWindowShouldClose(window)) {
@@ -129,8 +129,11 @@ int main() {
         // Draw wall (as before)
         drawWall(wallTextureID, 0.0f, 0.0f, 10.0f, 5.0f, true);
 
+        glColor3f(1.0f, 1.0f, 1.0f);
+
+
         // Draw the loaded model
-        myModel.draw(shaderProgram); // Render the model using the shader program
+        //myModel.draw(shaderProgram); // Render the model using the shader program
 
         // 2D overlay rendering
         glDisable(GL_DEPTH_TEST);
