@@ -16,6 +16,8 @@
 #include "cursor.h"        
 #include "crosshair.h"
 #include "lights.h"
+#include "models.h"
+#include "shaders.h"
 
 // Global window handle
 GLFWwindow* window = nullptr;
@@ -27,6 +29,9 @@ float lastFrameTime = 0.0f;
 float lastTime = 0.0f;
 int frameCount = 0;
 float fps = 0.0f;
+
+GLuint shaderProgram; // Your shader program ID
+Model myModel; // Instance of your Model class
 
 void displayFPS(float fps) {
     std::cout << "FPS: " << fps << std::endl;
@@ -87,13 +92,23 @@ int main() {
     updateLighting();
     renderObjectWithLighting();
 
+    GLuint vertexShader = ShaderLoader::loadShader("vertex_shader.glsl", GL_VERTEX_SHADER);
+    GLuint fragmentShader = ShaderLoader::loadShader("fragment_shader.glsl", GL_FRAGMENT_SHADER);
+
     // Load textures
     GLuint floorTextureID = loadTexture("C:/Users/ricar/Documents/floor2.png");
     GLuint wallTextureID = loadTexture("C:/Users/ricar/Documents/wall1.jpg");
 
+    // Create and load the model
+    if (!myModel.loadFromFile("C:/Users/ricar/Documents/Cubone/model.obj", "C:/Users/ricar/Documents/Cubone/materials.mtl")) {
+        std::cerr << "Failed to load model" << std::endl;
+        return -1;
+    }
+
     auto lastFrameTimePoint = std::chrono::high_resolution_clock::now();
     while (!glfwWindowShouldClose(window)) {
         auto frameStartTime = std::chrono::high_resolution_clock::now();
+
         float currentFrame = glfwGetTime();
         float deltaTime = currentFrame - lastFrameTime;
         lastFrameTime = currentFrame;
@@ -111,16 +126,11 @@ int main() {
         // Draw floor
         drawFloor(floorTextureID);
 
-        // Example values:
-        float x = 0.0f;        // x position
-        float z = 0.0f;        // z position
-        float width = 10.0f;   // wall width
-        float height = 5.0f;   // wall height
-        bool isXAxis = true;   // true if wall is parallel to X axis
+        // Draw wall (as before)
+        drawWall(wallTextureID, 0.0f, 0.0f, 10.0f, 5.0f, true);
 
-        glColor3f(1.0f, 1.0f, 1.0f);
-
-        drawWall(wallTextureID, x, z, width, height, isXAxis);
+        // Draw the loaded model
+        myModel.draw(shaderProgram); // Render the model using the shader program
 
         // 2D overlay rendering
         glDisable(GL_DEPTH_TEST);
@@ -140,9 +150,6 @@ int main() {
         glPopMatrix();
         glMatrixMode(GL_MODELVIEW);
         glEnable(GL_DEPTH_TEST);
-
-
-        glColor3f(1.0f, 1.0f, 1.0f);
 
         updateMovement(deltaTime);
 

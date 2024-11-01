@@ -1,7 +1,8 @@
 #version 330 core
-in vec3 fragColor; // Receive color from the vertex shader
-out vec4 outputColor;
+out vec4 FragColor;
+
+in vec2 TexCoord;
 
 void main() {
-    outputColor = vec4(fragColor, 1.0); // Set the output color
+    FragColor = vec4(TexCoord, 0.0, 1.0); // Example color output
 }

@@ -44,6 +44,15 @@ GLuint ShaderLoader::createShaderProgram(const std::string& vertexShaderFile, co
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
 
+    // Check for linking errors
+    GLint success;
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+    if (!success) {
+        char infoLog[512];
+        glGetProgramInfoLog(shaderProgram, 512, nullptr, infoLog);
+        std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+    }
+
     // Delete the shaders as they're linked now
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);

@@ -1,10 +1,15 @@
 #version 330 core
-layout(location = 0) in vec3 position;
-layout(location = 1) in vec3 color;
+layout(location = 0) in vec3 aPos;
+layout(location = 1) in vec3 aNormal;
+layout(location = 2) in vec2 aTexCoord;
 
-out vec3 fragColor; // Pass color to the fragment shader
+uniform mat4 u_ModelMatrix;
+uniform mat4 u_ViewMatrix;
+uniform mat4 u_ProjectionMatrix;
+
+out vec2 TexCoord;
 
 void main() {
-    gl_Position = vec4(position, 1.0);
-    fragColor = color; // Send the color to the fragment shader
+    gl_Position = u_ProjectionMatrix * u_ViewMatrix * u_ModelMatrix * vec4(aPos, 1.0);
+    TexCoord = aTexCoord;
 }
